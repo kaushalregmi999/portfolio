@@ -57,7 +57,7 @@ function App() {
   )
 
   const selectedProject = useMemo(
-    () => projectMetrics.find((item) => item.id === selectedProjectId) ?? projectMetrics[0] ?? null,
+    () => projectMetrics.find((item) => item.id === selectedProjectId) ?? null,
     [projectMetrics, selectedProjectId],
   )
 
@@ -78,15 +78,14 @@ function App() {
     return () => ctx.revert()
   }, [])
 
-  useEffect(() => {
-    if (!selectedProjectId && projectMetrics.length > 0) {
-      setSelectedProject(projectMetrics[0].id)
-    }
-  }, [selectedProjectId, projectMetrics, setSelectedProject])
-
   const handlePlanetSelect = (projectId) => {
     setSelectedProject(projectId)
     setSceneMode('selected')
+  }
+
+  const handleWarpToGalaxy = () => {
+    setSceneMode('galaxy')
+    setSelectedProject(null)
   }
 
   return (
@@ -123,14 +122,11 @@ function App() {
             <>
               <div className="scene-toolbar">
                 {sceneMode === 'galaxy' ? (
-                  <button
-                    onClick={() => selectedProject && setSceneMode('selected')}
-                    disabled={!selectedProject}
-                  >
-                    Go to Selected Planet
-                  </button>
+                  selectedProjectId ? (
+                    <button onClick={() => setSceneMode('selected')}>Go to Selected Planet</button>
+                  ) : null
                 ) : (
-                  <button onClick={() => setSceneMode('galaxy')}>Warp to Galaxy</button>
+                  <button onClick={handleWarpToGalaxy}>Warp to Galaxy</button>
                 )}
               </div>
 
@@ -167,7 +163,7 @@ function App() {
         onProjectSelect={setSelectedProject}
       />
 
-      <ContactForm />
+      {sceneMode === 'galaxy' && <ContactForm />}
     </main>
   )
 }
