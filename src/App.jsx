@@ -7,7 +7,6 @@ import { useGithubUniverse } from './hooks/useGithubUniverse'
 import { useGalaxyStore } from './store/useGalaxyStore'
 import { RecruiterAssistant } from './components/RecruiterAssistant'
 import { ResumePanels } from './components/ResumePanels'
-import { ContactForm } from './components/ContactForm'
 
 const GalaxyScene = lazy(() => import('./components/GalaxyScene').then((m) => ({ default: m.GalaxyScene })))
 const SelectedPlanetView = lazy(() =>
@@ -162,8 +161,6 @@ function App() {
         github={github}
         onProjectSelect={setSelectedProject}
       />
-
-      {sceneMode === 'galaxy' && <ContactForm />}
     </main>
   )
 }
